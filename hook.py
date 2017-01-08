@@ -35,7 +35,7 @@ def foo():
 			gitlab.pull()
 			github.push()
 			
-		print github.fetch()
+		print(github.fetch())
 		
 		return "OK"
 	else :
