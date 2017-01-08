@@ -24,14 +24,18 @@ def foo():
 		repo_path = "/opt/git-repos/{}".format(proj_name)
 		
 		#Initialize & prepare repo object.
-		repo = Repo(repo_path) if os.path.isdir(repo_path) else Repo.clone_from(gitlab_link, repo_path)
+		if os.path.isdir(repo_path) :
+			repo = Repo(repo_path)
+			github = repo.remotes.github
+			gitlab = repo.remotes.origin
+		else :
+			repo = Repo.clone_from(gitlab_link, repo_path)
+			github = repo.create_remote('github', github_link)
+			gitlab = repo.remotes.origin
 		
 		#Get remotes, pull and push.
-		github = repo.create_remote('github', github_link)
-		gitlab = repo.remotes.origin
-		
 		for branch in repo.branches :
-			repo.git.checkout('HEAD', b=branch)
+			repo.git.checkout(branch)
 			gitlab.pull()
 			github.push()
 			
