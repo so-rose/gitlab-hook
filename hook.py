@@ -33,19 +33,20 @@ def foo():
 			repo = Repo(repo_path)
 			github = repo.remotes.github
 			gitlab = repo.remotes.origin
+			repo.git.fetch()
 		else :
-			repo = Repo.clone_from(gitlab_link, repo_path)
+			repo = Repo.clone_from(gitlab_link, repo_path
 			github = repo.create_remote('github', github_link)
 			gitlab = repo.remotes.origin
+			repo.git.fetch()
 		
 		#Get remotes, pull and push.
 		for branch in repo.branches :
+			print(branch)
 			repo.git.checkout(branch)
 			gitlab.pull()
 			github.push()
-			
-		print(str(github.fetch()))
-		
+					
 		return "OK"
 	else :
 		return 403
