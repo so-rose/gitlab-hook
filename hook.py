@@ -33,12 +33,14 @@ def foo():
 			repo = Repo(repo_path)
 			github = repo.remotes.github
 			gitlab = repo.remotes.origin
-			repo.git.fetch()
+			gitlab.fetch()
+			origin.pull(origin.refs[0].remote_head)
 		else :
-			repo = Repo.clone_from(gitlab_link, repo_path)
+			repo = Repo.init(repo_path)
+			gitlab = repo.create_remote('origin', gitlab_link)
+			gitlab.fetch()
+			origin.pull(origin.refs[0].remote_head)
 			github = repo.create_remote('github', github_link)
-			gitlab = repo.remotes.origin
-			repo.git.fetch()
 		
 		#Get remotes, pull and push.
 		for branch in repo.branches :
