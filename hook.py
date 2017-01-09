@@ -16,11 +16,10 @@ app = Flask(__name__)
 @app.route('/',methods=['POST'])
 def foo():
 	data = request.get_json()
-
-	print("New commit by: {}".format(data['commits'][0]['author']['name']), file=sys.stderr)
-	print("Header: ", request.headers)
-	
 	proj_name = data['project']['name']
+	
+	print('\n\n {}: New commit authored by {}'.format(proj_name, data['commits'][0]['author']['name']))
+	
 	TOKEN = open('/opt/git-repos/token_{}'.format(proj_name), 'r').readlines()[0].rstrip()
 	
 	if request.headers['X-Gitlab-Token'] == TOKEN :
@@ -32,7 +31,7 @@ def foo():
 		if os.path.isdir(repo_path) :
 			repo = Repo(repo_path)
 			github = repo.remotes.github
-			gitlab = repo.remotes.origin
+			gitlab = repo.remotes.gitlab
 		else :
 			repo = Repo.init(repo_path)
 			gitlab = repo.create_remote('gitlab', gitlab_link)
@@ -42,7 +41,7 @@ def foo():
 		
 		#Get remotes, pull and push.
 		for branch in [str(data.ref).split('/')[1] for data in fetchData if 'gitlab' in str(data)] :
-			print(branch)
+			print('Checkout, pull, and push branch: {}'.format(branch))
 			repo.git.checkout(branch)
 			gitlab.pull()
 			github.push()
