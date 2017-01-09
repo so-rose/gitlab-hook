@@ -35,7 +35,7 @@ def foo():
 			gitlab = repo.remotes.origin
 			repo.git.fetch()
 		else :
-			repo = Repo.clone_from(gitlab_link, repo_path
+			repo = Repo.clone_from(gitlab_link, repo_path)
 			github = repo.create_remote('github', github_link)
 			gitlab = repo.remotes.origin
 			repo.git.fetch()
