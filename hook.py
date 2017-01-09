@@ -5,8 +5,10 @@ import json
 import sys
 import os, os.path
 
-github_user = 'so-rose'
-TOKEN = 'siueyrhg87w35ht8jmwfy7h5g'
+#For this to work, 
+
+github_user = open('/opt/git-repos/github-user', 'r').readlines()[0].rstrip()
+TOKEN = open('/opt/git-repos/token', 'r').readlines()[0].rstrip()
 
 app = Flask(__name__)
 
@@ -19,7 +21,7 @@ def foo():
 	
 	if request.headers['X-Gitlab-Token'] == TOKEN :
 		proj_name = data['project']['name']
-		github_link = 'git@github.com/{0}/{1}.git'.format(github_user, proj_name)
+		github_link = 'git@github.com:{0}/{1}.git'.format(github_user, proj_name)
 		gitlab_link = data['project']['git_http_url']
 		repo_path = "/opt/git-repos/{}".format(proj_name)
 		
@@ -39,7 +41,7 @@ def foo():
 			gitlab.pull()
 			github.push()
 			
-		print(github.fetch())
+		print(str(github.fetch()))
 		
 		return "OK"
 	else :
