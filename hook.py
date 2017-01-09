@@ -18,7 +18,7 @@ def foo():
 	data = request.get_json()
 	proj_name = data['project']['name']
 	
-	print('\n\n {}: New commit authored by {}'.format(proj_name, data['commits'][0]['author']['name']))
+	print('\n\n {}: Latest commit authored by {}'.format(proj_name, data['commits'][0]['author']['name']))
 	
 	TOKEN = open('/opt/git-repos/token_{}'.format(proj_name), 'r').readlines()[0].rstrip()
 	
